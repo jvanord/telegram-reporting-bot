@@ -1,4 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Telegram.Bot;
+using TelegramReportingBot;
+
 Console.WriteLine("Hello, World!");
 
 string botToken = string.Empty;
@@ -27,6 +30,10 @@ for (int i = 0; i < args.Length; i++) {
 	}
 }
 if (string.IsNullOrEmpty(botToken)) throw new ArgumentException("Argument 'token' must be specified.");
-if (string.IsNullOrEmpty(logLocation)) logLocation = @".\logs";
+if (string.IsNullOrEmpty(logLocation)) logLocation = @"./logs";
 
-Console.WriteLine($"Token: '{botToken}' | Logs: '{logLocation}' | Files: {includeFiles}");
+var logger = new Logger(logLocation, includeFiles);
+Console.WriteLine($"Reported message data will be saved to: '{logger.GetLogFilePath()}'");
+if (includeFiles)
+	Console.WriteLine($"Media will be saved to: '{logger.GetMediaFolderPath()}'");
+
